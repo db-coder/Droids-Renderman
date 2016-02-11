@@ -1,0 +1,106 @@
+FrameBegin 1
+    PixelSamples 5 5
+    Hider "hidden" "int jitter" [1] "int sigma" [0] "float sigmablur" [1] "int minsamples" [0] "int maxsamples" [9]
+    Format 640 360 1
+    Display "droids.tiff" "tiff" "rgba"
+    # Display "+aov_occ" "it" "aov_occ" "quantize" [0 255 0 255] # render AOV
+    Projection "perspective" "fov" [65.4705]
+    ScreenWindow -1 1 -0.5625 0.5625
+    ConcatTransform [ 0.999701 -0.000655908 -0.0244234 0  8.57239e-09 0.99964 -0.026846 0  -0.0244322 -0.0268381 -0.999341 0  0.589794 -12.7403 43.5988 1 ]
+    WorldBegin 
+        ShadingRate 1
+        Color [0 0 0]
+        TransformBegin
+            Translate -1 5 -0.5
+            Color [1 0.647 0]
+            Surface "occsurf2"
+            Sphere 5 -5 5 360
+        TransformEnd
+        TransformBegin
+            Translate -1 10 -0.5
+            Color [1 0.647 0]
+            Sphere 3 -3 3 180
+        TransformEnd
+        TransformBegin
+            Translate -2 12 5.5
+            Color [1 0 0]
+            Scale 2 -2 2
+            Disk 0 0.5 180
+        TransformEnd
+        TransformBegin
+            Translate 0 12 5.5
+            Color [1 0 0]
+            Scale 2 -2 2
+            Disk 0 0.5 180
+        TransformEnd
+        TransformBegin
+            Translate 10 12 5.5
+            Rotate 90 0 1 0
+            Rotate 45 1 0 0
+            Color [1 0 0]
+            Scale 2 -2 2
+            Cylinder 0.4 -.8 .8 360
+            Color [0 1 0]
+            Sphere 0.45 -0.45 0.45 360
+        TransformEnd
+        TransformBegin
+            Translate 13 8 5.5
+            Rotate -90 1 0 0
+            Color [1 0 1]
+            Scale 5 -5 5
+            Hyperboloid 0.15 -0.8 -.5 0.25 .25 .6 360
+        TransformEnd
+        TransformBegin
+            Translate 13 10 5.5
+            Color [1 0 1]
+            Scale 5 5 5
+            Sphere 0.45 -0.45 0.45 180
+        TransformEnd
+        TransformBegin
+            Translate 13 14 5.5
+            Color [1 0 1]
+            Scale 5 -5 5
+            Sphere 0.45 -0.45 0.45 180
+            Translate -0.5 0 1
+            Scale 0.25 -0.25 0.25
+            Color [1 1 1]
+            Disk 0 0.5 360
+            Translate 1.5 0 0
+            Disk 0 0.5 360
+            Translate -0.4 -0.2 1
+            Scale 0.5 -0.5 0.5
+            Color [0 0 0]
+            Disk 0 0.5 360
+            Translate -2.5 0 0
+            Disk 0 0.5 360
+        TransformEnd
+        TransformBegin
+            Translate 16 12 5.5
+            Rotate 90 0 1 0
+            Rotate 135 1 0 0
+            Color [1 0 0]
+            Scale 2 -2 2
+            Cylinder 0.4 -.8 .8 360
+            Color [0 1 0]
+            Sphere 0.45 -0.45 0.45 360
+        TransformEnd
+        TransformBegin
+            Translate 11.5 4 5.5
+            Rotate 90 1 0 0
+            Color [1 0 0]
+            Scale 2 -2 2
+            Cylinder 0.4 -.8 .8 360
+            Color [0 1 0]
+            Sphere 0.45 -0.45 0.45 360
+        TransformEnd
+        TransformBegin
+            Translate 15 4 5.5
+            Rotate 90 1 0 0
+            Color [1 0 0]
+            Scale 2 -2 2
+            Cylinder 0.4 -.8 .8 360
+            Color [0 1 0]
+            Sphere 0.45 -0.45 0.45 360
+        TransformEnd
+    WorldEnd 
+FrameEnd 
