@@ -1,8 +1,8 @@
 FrameBegin 1
     PixelSamples 5 5
-    Attribute "visibility" "int diffuse" [1]
-    Attribute "visibility" "int specular" [1]
-    Attribute "visibility" "int transmission" [1]
+    # Attribute "visibility" "int diffuse" [1]
+    # Attribute "visibility" "int specular" [1]
+    # Attribute "visibility" "int transmission" [1]
     Hider "hidden" "int jitter" [1] "int sigma" [0] "float sigmablur" [1] "int minsamples" [0] "int maxsamples" [9]
     Format 1280 720 1
     Display "droids.tiff" "tiff" "rgba"
@@ -11,21 +11,48 @@ FrameBegin 1
     ScreenWindow -1 1 -0.5625 0.5625
     ConcatTransform [ 0.999701 -0.000655908 -0.0244234 0  8.57239e-09 0.99964 -0.026846 0  -0.0244322 -0.0268381 -0.999341 0  0.589794 -12.7403 43.5988 1 ]
     ShadingRate 1
-    Option "shading" "int directlightingsamples" 64
+    ShadingInterpolation "smooth"
+    # Option "shading" "int directlightingsamples" 64
     WorldBegin 
+
+        # Attribute "visibility" "specular" 1 # make objects visible to refl. rays
+        # Attribute "trace" "bias" 0.0001
+        Attribute "trace" "int maxdiffusedepth" [0]
+        # Display "light1.shad" "shadow" "z" "int minmax" [1]
+        # Display "light2.shad" "shadow" "z" "int minmax" [1]
+        # Display "light3.shad" "shadow" "z" "int minmax" [1]
+        # Display "light4.shad" "shadow" "z" "int minmax" [1]
         ReadArchive "arrowlight.rib"
-        Surface "shaders/plastic"
-        Color [1 0 0]
-        Scale 5 5 5
-        Polygon "P" [-4 0 -4 -4 0 4 4 0 4 4 0 -4] "st" [0 0 0 1 1 1 1 0] #Floor
-        Color [1 1 1]
-        Polygon "P" [-4 8 4 -4 8 -4 4 8 -4 4 8 4 ] "st" [0 0 0 1 1 1 1 0] #Up
-        Color [0 0 1]
-        Polygon "P" [-4 0 -4 -4 8 -4 4 8 -4 4 0 -4] "st" [0 0 0 1 1 1 1 0] #Back
-        Color [1 1 1]
-        Polygon "P" [4 0 4 4 8 4 4 8 -4 4 0 -4] "st" [0 0 0 1 1 1 1 0] #Right
-        Polygon "P" [-4 0 -4 -4 8 -4 -4 8 4 -4 0 4 ] "st" [0 0 0 1 1 1 1 0] #Left
-        Scale 0.2 0.2 0.2
+        # Surface "shaders/plastic"
+        # Surface "shaders/pointbasedcolorbleeding" "filename" "cornell_radio.ptc"
+        #     "clampbleeding" 1 "sortbleeding" 1 "maxsolidangle" 0.03
+        #     "maxvariation" 0.02
+        AttributeBegin 
+            Attribute "identifier" "float id" [11]
+            Sides 2
+            Attribute "visibility" "int camera" [1] "int specular" [1] "int diffuse" [1] "int transmission" [1]
+            Attribute "identifier" "string name" ["areaLightShape"]
+            # Translate 0 24 0
+            # Scale 20 10 10
+            # Color 1 1 1
+            AreaLightSource "shaders/geolight" "areaLightShape" "float intensity" 2
+            Surface "shaders/geolight" "float intensity" 2
+            Color [1 0 0]
+            Scale 5 5 5
+            Polygon "P" [-4 0 -4 -4 0 4 4 0 4 4 0 -4] "st" [0 0 0 1 1 1 1 0] #Floor
+            Color [1 1 1]
+            Polygon "P" [-4 8 4 -4 8 -4 4 8 -4 4 8 4 ] "st" [0 0 0 1 1 1 1 0] #Up
+            Color [0 0 1]
+            Polygon "P" [-4 0 -4 -4 8 -4 4 8 -4 4 0 -4] "st" [0 0 0 1 1 1 1 0] #Back
+            Color [1 1 1]
+            Polygon "P" [4 0 4 4 8 4 4 8 -4 4 0 -4] "st" [0 0 0 1 1 1 1 0] #Right
+            Polygon "P" [-4 0 -4 -4 8 -4 -4 8 4 -4 0 4 ] "st" [0 0 0 1 1 1 1 0] #Left
+            Scale 0.2 0.2 0.2
+            # Geometry "rectlight"
+            # Polygon "P" [-0.5 0 -0.5  -0.5 0 0.5  0.5 0 0.5  0.5 0 -0.5]
+            #    "varying color Cs" [2 0 0   0 2 0   0 0 2   2 2 2]
+        AttributeEnd 
+        # Attribute "visibility" "transmission" "opaque" # the spheres cast shadows
         TransformBegin
             Surface "shaders/plastic_with_texture"
             Translate -1 5 -0.5 
@@ -122,11 +149,16 @@ FrameBegin 1
             Sphere 0.45 -0.45 0.45 360
         TransformEnd
         TransformBegin
-            Translate -10 5 5.5
-            Color [1 0 1]
-            Surface "metal"
-            Scale 2 2 2
+            Translate -8 5 5.5
+            Color [1 1 1]
+            Surface "shaders/metal"
             Sphere 2 -2 2 360
-    TransformEnd
+        TransformEnd
+        TransformBegin
+            Translate -14 5 6.5
+            Color [1 1 1]
+            Surface "shaders/transparent"
+            Sphere 2 -2 2 360
+        TransformEnd
     WorldEnd 
 FrameEnd 

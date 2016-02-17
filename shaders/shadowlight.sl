@@ -9,6 +9,6 @@ shadowlight
     illuminate(from)
     {
 		Cl = intensity * lightcolor / L.L;
-		// Cl *= transmission(Ps, from);
+		Cl *= transmission(Ps, from);
 	}
 }
