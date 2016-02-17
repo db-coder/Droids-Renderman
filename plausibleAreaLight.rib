@@ -1,0 +1,85 @@
+#======================================================
+# A trivial test harness for area light sources
+# NOTE: This example uses the "plausibleArealight" shader
+#   which has been modified to use the emit() call
+#======================================================
+Quantize "rgb" 0 0 0 0
+Display "dielectric" "framebuffer" "rgba" "int merge" [0]
+Format 640 480 1
+PixelSamples 3 3
+Projection "perspective" "fov" 45
+Translate 0 0 10
+ShadingRate 1
+
+Option "shading" "int directlightingsamples" 64
+
+WorldBegin
+Attribute "visibility" "int specular" [1]
+                       "int diffuse" [1]
+                       "int transmission" [1]
+Attribute "trace" "int maxdiffusedepth" [1] "int maxspeculardepth" [1]
+
+IfBegin "1"
+      #---------------------------
+      # This is the new area light source technique,
+      # note the Polygon on which it emits light
+      #---------------------------
+      AttributeBegin
+      Attribute "visibility" "int specular" [0]
+                             "int diffuse" [0]
+                             "int transmission" [0]
+      Scale 10 4 1 # nonsquare rect
+      Translate 0 10 -10  # above right the camera
+
+      AreaLightSource "plausibleArealight" "mylighthandle" "intensity" 150
+                      "color lightcolor" [1 1 1] "float maxSamples" 64
+      Polygon "P" [-0.5 -0.5 0   0.5 -0.5 0    0.5 0.5 0   -0.5 0.5 0]
+
+      AttributeEnd
+Else
+      #---------------------------
+      # This is the old psuedo-area light source technique
+      #---------------------------
+      AttributeBegin
+      Attribute "visibility" "int specular" [0]
+                                                 "int diffuse" [0]
+                                                 "int transmission" [0]
+      Scale 10 4 1 # nonsquare rect
+      Translate 0 10 -10  # above right the camera
+
+      LightSource "plausibleArealight" "mylighthandle" "intensity" 150
+                                      "color lightcolor" [1 1 1] "float maxSamples" 64
+      AttributeEnd
+      Illuminate "mylighthandle" 1
+IfEnd
+
+AttributeBegin
+Translate -1.5 -2 0
+Surface "plausibleDielectric" "float roughness" .08
+                       "color surfaceColor" [1 0 0]
+                       "float indirectDiffuseMaxVar" [0]
+Sphere 1 -1 1 360
+
+AttributeEnd
+AttributeBegin
+Surface "plausibleDielectric" "float roughness" .03
+                       "color surfaceColor" [0 1 0]
+                       "float indirectDiffuseMaxVar" [0]
+Sphere 1 -1 1 360
+AttributeEnd
+
+
+AttributeBegin
+Translate 1.5 2 0
+Surface "plausibleDielectric" "float roughness" .01
+                       "color surfaceColor" [0 0 1]
+                       "float indirectDiffuseMaxVar" [0]
+Sphere 1 -1 1 360
+AttributeEnd
+
+Scale 10 10 .1
+Translate 0 0 -1
+Surface "plausibleMatte"
+Geometry "cube"
+
+WorldEnd

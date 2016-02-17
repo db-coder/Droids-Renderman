@@ -1,5 +1,8 @@
 FrameBegin 1
     PixelSamples 5 5
+    Attribute "visibility" "int diffuse" [1]
+    Attribute "visibility" "int specular" [1]
+    Attribute "visibility" "int transmission" [1]
     Hider "hidden" "int jitter" [1] "int sigma" [0] "float sigmablur" [1] "int minsamples" [0] "int maxsamples" [9]
     Format 1280 720 1
     Display "droids.tiff" "tiff" "rgba"
@@ -7,15 +10,24 @@ FrameBegin 1
     Projection "perspective" "fov" [65.4705]
     ScreenWindow -1 1 -0.5625 0.5625
     ConcatTransform [ 0.999701 -0.000655908 -0.0244234 0  8.57239e-09 0.99964 -0.026846 0  -0.0244322 -0.0268381 -0.999341 0  0.589794 -12.7403 43.5988 1 ]
+    ShadingRate 1
+    Option "shading" "int directlightingsamples" 64
     WorldBegin 
-        LightSource "shaders/shadowlight" 1 "intensity" 0.25 "lightcolor" [0 0 -1] "from" [0 0 5]
-        # ReadArchive "arrowlight.rib"
+        ReadArchive "arrowlight.rib"
+        Surface "shaders/plastic"
         Color [1 0 0]
-        Scale 8 8 8
+        Scale 5 5 5
         Polygon "P" [-4 0 -4 -4 0 4 4 0 4 4 0 -4] "st" [0 0 0 1 1 1 1 0] #Floor
-        Scale 0.125 0.125 0.125
+        Color [1 1 1]
+        Polygon "P" [-4 8 4 -4 8 -4 4 8 -4 4 8 4 ] "st" [0 0 0 1 1 1 1 0] #Up
+        Color [0 0 1]
+        Polygon "P" [-4 0 -4 -4 8 -4 4 8 -4 4 0 -4] "st" [0 0 0 1 1 1 1 0] #Back
+        Color [1 1 1]
+        Polygon "P" [4 0 4 4 8 4 4 8 -4 4 0 -4] "st" [0 0 0 1 1 1 1 0] #Right
+        Polygon "P" [-4 0 -4 -4 8 -4 -4 8 4 -4 0 4 ] "st" [0 0 0 1 1 1 1 0] #Left
+        Scale 0.2 0.2 0.2
         TransformBegin
-            Surface "shaders/texturemap" "file" ["textures/texture1.tex"]
+            Surface "shaders/plastic_with_texture"
             Translate -1 5 -0.5 
             Color [1 0.647 0]
             Sphere 5 -5 5 360
@@ -39,7 +51,7 @@ FrameBegin 1
             Scale 2 -2 2
             Disk 0 0.5 180
         TransformEnd
-        Surface "shaders/as"
+        Surface "shaders/plastic"
         TransformBegin
             Translate 10 12 5.5
             Rotate 90 0 1 0
@@ -68,7 +80,7 @@ FrameBegin 1
             Color [1 0 1]
             Scale 5 -5 5
             Sphere 0.45 -0.45 0.45 180
-            Translate -0.5 0 1
+            Translate -0.3 0 0.5
             Scale 0.25 -0.25 0.25
             Color [1 1 1]
             Disk 0 0.5 360
@@ -109,5 +121,12 @@ FrameBegin 1
             Color [0 1 0]
             Sphere 0.45 -0.45 0.45 360
         TransformEnd
+        TransformBegin
+            Translate -10 5 5.5
+            Color [1 0 1]
+            Surface "metal"
+            Scale 2 2 2
+            Sphere 2 -2 2 360
+    TransformEnd
     WorldEnd 
 FrameEnd 

@@ -1,5 +1,5 @@
 surface
-plastic( float constant_mode = 0.0, Ks=.5, Kd=.5, Ka=1, roughness=.1; color diffusecolor =1, specularcolor=1 )
+plastic( float constant_mode = 0.0, Ks=.5, Kd=.5, Ka=1, roughness=.1; color diffusecolor =1, specularcolor=0.3 )
 {
     if (constant_mode == 1)
     {
@@ -14,7 +14,8 @@ plastic( float constant_mode = 0.0, Ks=.5, Kd=.5, Ka=1, roughness=.1; color diff
         V = -normalize(I);
 
         Oi = Os;
-        Ci = Os * ( Cs * diffusecolor * (Ka*ambient() + Kd*diffuse(Nf)) +
+        Ci = ( Cs * diffusecolor * (Ka*ambient() + Kd*diffuse(Nf)) +
 	 	    specularcolor * Ks * specular(Nf,V,roughness) );
+        Ci += 0.25 * indirectdiffuse(P,Nf,1000);
 	 }
 }

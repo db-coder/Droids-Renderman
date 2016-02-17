@@ -1,8 +1,7 @@
 light
 shadowlight
 (
-    float intensity = 1,
-          samples = 256;
+    float intensity = 1,samples = 256;
     color lightcolor = 1;
     point from = point "shader" (0,0,0);
 )
@@ -10,6 +9,6 @@ shadowlight
     illuminate(from)
     {
 		Cl = intensity * lightcolor / L.L;
-		Cl *= transmission(Ps, from);
+		// Cl *= transmission(Ps, from);
 	}
 }
