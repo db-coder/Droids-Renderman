@@ -1,9 +1,11 @@
 FrameBegin 1
     PixelSamples 5 5
-    # Attribute "visibility" "int diffuse" [1]
-    # Attribute "visibility" "int specular" [1]
-    # Attribute "visibility" "int transmission" [1]
-    Hider "hidden" "int jitter" [1] "int sigma" [0] "float sigmablur" [1] "int minsamples" [0] "int maxsamples" [9]
+    Attribute "visibility" "int diffuse" [1]
+    Attribute "visibility" "int specular" [1]
+    Attribute "visibility" "int transmission" [1]
+    Attribute "photon" "causticmap" "caus.cpm"
+    Attribute "photon" "estimator" 200
+    # Hider "hidden" "int jitter" [1] "int sigma" [0] "float sigmablur" [1] "int minsamples" [0] "int maxsamples" [9]
     Format 1280 720 1
     Display "droids.tiff" "tiff" "rgba"
     # Display "+aov_occ" "it" "aov_occ" "quantize" [0 255 0 255] # render AOV
@@ -17,7 +19,7 @@ FrameBegin 1
 
         # Attribute "visibility" "specular" 1 # make objects visible to refl. rays
         # Attribute "trace" "bias" 0.0001
-        Attribute "trace" "int maxdiffusedepth" [0]
+        Attribute "trace" "int maxdiffusedepth" [2]
         # Display "light1.shad" "shadow" "z" "int minmax" [1]
         # Display "light2.shad" "shadow" "z" "int minmax" [1]
         # Display "light3.shad" "shadow" "z" "int minmax" [1]
@@ -66,14 +68,14 @@ FrameBegin 1
         TransformEnd
         Surface "shaders/texturemap" "file" ["textures/night.tex"]
         TransformBegin
-            Translate -2 12 5.5
+            Translate -2 12 1.5
             Color [1 0 0]
             Scale 2 -2 2
             Disk 0 0.5 180
         TransformEnd
         Surface "shaders/texturemap" "file" ["textures/night.tex"]
         TransformBegin
-            Translate 0 12 5.5
+            Translate 0 12 1.5
             Color [1 0 0]
             Scale 2 -2 2
             Disk 0 0.5 180
@@ -113,7 +115,7 @@ FrameBegin 1
             Disk 0 0.5 360
             Translate 1.5 0 0
             Disk 0 0.5 360
-            Translate -0.4 -0.2 1
+            Translate -0.4 -0.2 0
             Scale 0.5 -0.5 0.5
             Color [0 0 0]
             Disk 0 0.5 360

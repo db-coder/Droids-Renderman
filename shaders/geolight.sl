@@ -1,6 +1,6 @@
 class geolight (float intensity = 1;
                 color lightColor = 1;
-                float constant_mode = 0.0, Ks=.5, Kd=.5, Ka=1, roughness=.1; color diffusecolor =1, specularcolor=0.3)
+                float constant_mode = 0.0, Ks=.5, Kd=.5, Ka=1, Kc=1, roughness=.1; color diffusecolor =0.75, specularcolor=0)
 {
     public void prelighting (output color Ci, Oi)
     {
@@ -22,9 +22,9 @@ class geolight (float intensity = 1;
 	        V = -normalize(I);
 
 	        Oi = Os;
-	        Ci = ( Cs * diffusecolor * (Ka*ambient() + Kd*diffuse(Nf)) +
-		 	    specularcolor * Ks * specular(Nf,V,roughness) );
-	        Ci += 0.25 * indirectdiffuse(P,Nf,1000);
+	        Ci += ( Cs * diffusecolor * (Ka*ambient() + Kd*diffuse(Nf)) + specularcolor * Ks * specular(Nf,V,roughness) );
+	        Ci += 1.2 * indirectdiffuse(P,Nf,1000);
+	        // Ci += Kc * photonmap("caus.cpm", P, N, "estimator", 400);
 		}
     }
 }
