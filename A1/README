@@ -1,0 +1,26 @@
+Assignment 1: Rendering
+
+Team Members: 
+				Dibyendu Mondal - 130050046
+				Anand Bhoraskar - 130050025
+
+Instructions:
+
+Steps to run the program:
+cd A1/
+./make.sh
+
+Other Instructions:
+First we run the executable ./make.sh
+Run display droids.tiff to open the final image formed.
+We have 2 bots. One humanoid (Our own creation) and the other non-humanoid (BB-8).
+There's 1 metallic and 1 transparent ball.
+
+Report Link:
+http://www.cse.iitb.ac.in/~dibyendu/CS775_Assignment1
+
+Citations:
+For different shaders, we looked into https://renderman.pixar.com/resources/current/RenderMan/home.html
+For some shaders/parts of code, we referred to the code given in Stanford_Box and the ones uploaded as examples by Sir. 
+For textures we used Google Image Search. Also used the Linux convert tool to convert images to tiff from bmp.
+We used txmake to generate tex from tiff file.

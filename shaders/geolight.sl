@@ -22,9 +22,9 @@ class geolight (float intensity = 1;
 	        V = -normalize(I);
 
 	        Oi = Os;
-	        Ci += ( Cs * diffusecolor * (Ka*ambient() + Kd*diffuse(Nf)) + specularcolor * Ks * specular(Nf,V,roughness) );
-	        Ci += 1.2 * indirectdiffuse(P,Nf,1000);
-	        // Ci += Kc * photonmap("caus.cpm", P, N, "estimator", 400);
+	        Ci = Os * ( Cs * diffusecolor * (Ka*ambient() + Kd*diffuse(Nf)) + specularcolor * Ks * specular(Nf,V,roughness) );
+	        Ci += 1.2 * indirectdiffuse(P,Nf,100);
+	        // Ci += Kc * photonmap("spcaustic.ptc", P, N, "estimator", 480);
 		}
     }
 }

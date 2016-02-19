@@ -1,3 +1,4 @@
+python genarealight.py > arrowlight.rib
 cd shaders
 rm -rf *.slo
 shader *.sl

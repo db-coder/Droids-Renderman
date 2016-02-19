@@ -3,20 +3,29 @@ FrameBegin 1
     Attribute "visibility" "int diffuse" [1]
     Attribute "visibility" "int specular" [1]
     Attribute "visibility" "int transmission" [1]
-    Attribute "photon" "causticmap" "caus.cpm"
-    Attribute "photon" "estimator" 200
+    Option "photon" "emit" 5000000   # single-pass photon map generation
+    Option "photon" "string lifetime" "file"   # "transient" or "file"
+    Attribute "photon" "causticmap" "spcaustic.ptc"
+    # Attribute "photon" "estimator" 200
+    # Attribute "photon" "maxspeculardepth" 5
+    # Attribute "photon" "maxdiffusedepth" 5
     # Hider "hidden" "int jitter" [1] "int sigma" [0] "float sigmablur" [1] "int minsamples" [0] "int maxsamples" [9]
     Format 1280 720 1
     Display "droids.tiff" "tiff" "rgba"
-    # Display "+aov_occ" "it" "aov_occ" "quantize" [0 255 0 255] # render AOV
     Projection "perspective" "fov" [65.4705]
     ScreenWindow -1 1 -0.5625 0.5625
     ConcatTransform [ 0.999701 -0.000655908 -0.0244234 0  8.57239e-09 0.99964 -0.026846 0  -0.0244322 -0.0268381 -0.999341 0  0.589794 -12.7403 43.5988 1 ]
     ShadingRate 1
     ShadingInterpolation "smooth"
     # Option "shading" "int directlightingsamples" 64
-    WorldBegin 
 
+    WorldBegin 
+        LightSource "shadowspot" 1 "from" [-14 9.5 6.5] "to" [-14 2 6.5] "intensity" 25
+            "coneangle" 0.3 
+        LightSource "causticlight" 2 "color filter" [0.2 0.2 0.2]
+        LightSource "shadowspot" 3 "from" [5 7 0] "to" [0 0 0] "intensity" 25
+            "coneangle" 0.5 "string shadowname" "raytrace"
+        LightSource "causticlight" 4 "color filter" [0.2 0.2 0.2]
         # Attribute "visibility" "specular" 1 # make objects visible to refl. rays
         # Attribute "trace" "bias" 0.0001
         Attribute "trace" "int maxdiffusedepth" [2]
@@ -29,19 +38,17 @@ FrameBegin 1
         # Surface "shaders/pointbasedcolorbleeding" "filename" "cornell_radio.ptc"
         #     "clampbleeding" 1 "sortbleeding" 1 "maxsolidangle" 0.03
         #     "maxvariation" 0.02
+        Attribute "visibility" "transmission" 1
+        Attribute "visibility" "specular" 1
+        Attribute "visibility" "diffuse" 1
+        # Attribute "visibility" "int camera" [1] "int specular" [1] "int diffuse" [1] "int transmission" [1]
+        # Attribute "identifier" "string name" ["areaLightShape"]
+        # Attribute "identifier" "float id" [11]
         AttributeBegin 
-            Attribute "identifier" "float id" [11]
-            Sides 2
-            Attribute "visibility" "int camera" [1] "int specular" [1] "int diffuse" [1] "int transmission" [1]
-            Attribute "identifier" "string name" ["areaLightShape"]
-            # Translate 0 24 0
-            # Scale 20 10 10
-            # Color 1 1 1
-            AreaLightSource "shaders/geolight" "areaLightShape" "float intensity" 2
+            # Sides 2
+            # AreaLightSource "shaders/geolight" "areaLightShape" "float intensity" 2
             Surface "shaders/geolight" "float intensity" 2
-            Color [1 0 0]
             Scale 5 5 5
-            Polygon "P" [-4 0 -4 -4 0 4 4 0 4 4 0 -4] "st" [0 0 0 1 1 1 1 0] #Floor
             Color [1 1 1]
             Polygon "P" [-4 8 4 -4 8 -4 4 8 -4 4 8 4 ] "st" [0 0 0 1 1 1 1 0] #Up
             Color [0 0 1]
@@ -54,30 +61,34 @@ FrameBegin 1
             # Polygon "P" [-0.5 0 -0.5  -0.5 0 0.5  0.5 0 0.5  0.5 0 -0.5]
             #    "varying color Cs" [2 0 0   0 2 0   0 0 2   2 2 2]
         AttributeEnd 
+        Color [1 0 1]
+        Scale 2 2 2
+        Attribute "photon" "shadingmodel" "matte"
+        Surface "shaders/geolightphoton" "float intensity" 2
+        Polygon "P" [-10 0 10  10 0 10  10 0 -10  -10 0 -10] "st" [0 0 0 1 1 1 1 0] #Floor
+        Scale 0.5 0.5 0.5
         # Attribute "visibility" "transmission" "opaque" # the spheres cast shadows
+            # Volume (homogeneous extinction, isotropic scattering)
+        Attribute "user" "int receivesShadows" [1]
+        Translate -2 0 0
         TransformBegin
             Surface "shaders/plastic_with_texture"
-            Translate -1 5 -0.5 
+            Translate -5 5 -0.5 
             Color [1 0.647 0]
             Sphere 5 -5 5 360
         TransformEnd
         TransformBegin
-            Translate -1 10 -0.5
+            Translate -5 10 -0.5
             Color [1 0.647 0]
             Sphere 3 -3 3 180
         TransformEnd
         Surface "shaders/texturemap" "file" ["textures/night.tex"]
         TransformBegin
-            Translate -2 12 1.5
+            Translate -6 12 2.4
             Color [1 0 0]
             Scale 2 -2 2
             Disk 0 0.5 180
-        TransformEnd
-        Surface "shaders/texturemap" "file" ["textures/night.tex"]
-        TransformBegin
-            Translate 0 12 1.5
-            Color [1 0 0]
-            Scale 2 -2 2
+            Translate 1.4 0 0
             Disk 0 0.5 180
         TransformEnd
         Surface "shaders/plastic"
@@ -151,16 +162,27 @@ FrameBegin 1
             Sphere 0.45 -0.45 0.45 360
         TransformEnd
         TransformBegin
-            Translate -8 5 5.5
+            Translate -10 12 5.5
             Color [1 1 1]
             Surface "shaders/metal"
             Sphere 2 -2 2 360
         TransformEnd
+        Translate 2 0 0
         TransformBegin
+            Attribute "photon" "shadingmodel" "glass"
             Translate -14 5 6.5
             Color [1 1 1]
+            # Orientation "inside"
             Surface "shaders/transparent"
             Sphere 2 -2 2 360
         TransformEnd
+        Attribute "photon" "shadingmodel" "chrome"
+        Color 0.02 0.62 0.98
+        Scale 2 2 2
+        Surface "aachrome" "color specularcolor" [0.02 0.62 0.98]
+        Rotate -90 1 0 0
+        Cylinder 1 -0.1 0.5 360
+        Orientation "inside"
+        Cylinder 0.99 -0.1 0.5 360
     WorldEnd 
-FrameEnd 
+FrameEnd
